@@ -1,0 +1,4 @@
+*.json
+.idea
+.DS_Store
+repos/*
