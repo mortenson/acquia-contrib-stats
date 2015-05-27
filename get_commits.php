@@ -34,22 +34,22 @@ foreach ($csv_rows as $csv_row) {
   }
   $contributors = isset($contributors) ? $contributors : array();
   // Check to see if an Acquia employee was involved with this commit
-  $contributors = array();
+  $commit_contributors = array();
   foreach ($users as $user) {
     $full_name = $user['first_name'] . ' ' . $user['last_name'];
     // Check if this is a contribution
     if (in_array($user['name'], $contributors) || in_array($full_name, $contributors)) {
-      $contributors[] = $user;
+      $commit_contributors[] = $user;
     }
     // An employee might also be the commit author, in the case of commits not related to issues (think early Drupal)
     elseif ((isset($commit[2]) && $full_name == $commit[2]) || (isset($commit[3]) && $user['mail'] == $commit[3])) {
-      $contributors[] = $user;
+      $commit_contributors[] = $user;
     }
   }
   // If we set an author or contributor, add this commit to our dataset
   if (!empty($contributors)) {
     $acquia_commits[] = array(
-        'contributors' => $contributors,
+        'contributors' => $commit_contributors,
         'timestamp' => $commit[1]
     );
   }

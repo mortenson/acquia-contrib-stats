@@ -5,7 +5,7 @@
 <script>
     $(function() {
         $.getJSON("commits.json", function(data) {
-            commits_monthly = {};
+            var commits_monthly = {};
             // Count the number of commits per month
             for (var i in data) {
                 var date = new Date(data[i].timestamp*1000);
@@ -14,7 +14,8 @@
                 if (commits_monthly[key] === undefined) {
                     commits_monthly[key] = {
                         'count': 1,
-                        'date': firstDay
+                        'date': firstDay,
+                        'data': data[i]
                     };
                 }
                 else {
@@ -55,10 +56,53 @@
                 x_accessor: 'date',
                 y_accessor: 'count',
                 markers: markers
-            })
+            });
+
+            // Create list of top contributors this last month (30 days)
+            var contributor_totals = {};
+            var last_month = (Date.now()/1000) - 2592000;
+            var total = 0;
+            for (var i in data) {
+                if (last_month <= data[i].timestamp) {
+                    for (var j in data[i].contributors) {
+                        var contributor = data[i].contributors[j];
+                        if (contributor_totals[contributor.name] === undefined) {
+                            contributor_totals[contributor.name] = 1;
+                            ++total;
+                        }
+                        else {
+                            ++contributor_totals[contributor.name];
+                            ++total;
+                        }
+                    }
+                }
+            }
+            // Sort totals
+            var contributor_totals_sorted = [];
+            // Flatten object into array
+            for (var i in contributor_totals) {
+                contributor_totals_sorted.push([i, contributor_totals[i]]);
+            }
+            // Sort array
+            contributor_totals_sorted.sort(function(a, b) {
+                a = a[1];
+                b = b[1];
+
+                return a > b ? -1 : (a < b ? 1 : 0);
+            });
+            // Display in list
+            for (var i in contributor_totals_sorted) {
+                var user = contributor_totals_sorted[i][0];
+                var count = contributor_totals_sorted[i][1];
+                $('#top ol').append('<li>' + user + ': ' + count + '</li>');
+            }
         });
     });
 </script>
 <body>
     <div id="chart"></div>
+    <div id="top">
+        <h1>Top Contributors in last 30 days</h1>
+        <ol></ol>
+    </div>
 </body>
