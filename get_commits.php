@@ -47,7 +47,7 @@ foreach ($csv_rows as $csv_row) {
     }
   }
   // If we set an author or contributor, add this commit to our dataset
-  if (!empty($contributors)) {
+  if (!empty($commit_contributors)) {
     $acquia_commits[] = array(
         'contributors' => $commit_contributors,
         'timestamp' => $commit[1]

@@ -14,8 +14,7 @@
                 if (commits_monthly[key] === undefined) {
                     commits_monthly[key] = {
                         'count': 1,
-                        'date': firstDay,
-                        'data': data[i]
+                        'date': firstDay
                     };
                 }
                 else {
@@ -94,15 +93,15 @@
             for (var i in contributor_totals_sorted) {
                 var user = contributor_totals_sorted[i][0];
                 var count = contributor_totals_sorted[i][1];
-                $('#top ol').append('<li>' + user + ': ' + count + '</li>');
+                $('#top ol').append('<li>' + user + ' (' + count + ')</li>');
             }
         });
     });
 </script>
 <body>
     <div id="chart"></div>
-    <div id="top">
-        <h1>Top Contributors in last 30 days</h1>
-        <ol></ol>
+    <div id="top" style="text-align:center">
+        <h1>Contributors in last 30 days</h1>
+        <ol style="list-style:none"></ol>
     </div>
 </body>
