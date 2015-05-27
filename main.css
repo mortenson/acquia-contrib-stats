@@ -1,0 +1,43 @@
+body {
+    background: #262626;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: white;
+}
+
+#top {
+    text-align: center;
+}
+
+#top ol {
+    list-style: none;
+}
+
+.mg-line1-color {
+    stroke: #29AAE1;
+}
+
+.mg-x-axis text {
+    fill: transparent;
+}
+
+.mg-year-marker text {
+    fill: #29AAE1;
+    font-size: .9rem;
+}
+
+.mg-y-axis text {
+    fill: #29AAE1;
+}
+
+.mg-markers text {
+    fill: white;
+    font-size: 13px;
+}
+
+.mg-area1-color {
+    fill: #29AAE1;
+}
+
+.mg-active-datapoint {
+    fill: #29AAE1;
+}
