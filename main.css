@@ -5,7 +5,10 @@ body {
 }
 
 #top {
-    text-align: center;
+    text-align: right;
+    position: absolute;
+    right: 20px;
+    top: 0;
 }
 
 #top ol {

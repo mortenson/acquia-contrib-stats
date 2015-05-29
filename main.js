@@ -3,31 +3,31 @@ $(function() {
         var commits_monthly = {};
         // Count the number of commits per month
         for (var i in data) {
-            // Get date object and key for the current month
-            var date = new Date(data[i].timestamp*1000);
-            var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-            var key = firstDay.getFullYear() + '_' + firstDay.getMonth();
+            commits_monthly[i] = {};
+            for (var j in data[i]) {
+                // Get date object and key for the current month
+                var date = new Date(data[i][j].timestamp * 1000);
+                var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                var key = firstDay.getFullYear() + '_' + firstDay.getMonth();
 
-            // Add a new data point if one does not already exist
-            if (commits_monthly[key] === undefined) {
-                commits_monthly[key] = {
-                    'count': 1,
-                    'date': firstDay
-                };
-            }
-            // Increment existing data point
-            else {
-                ++commits_monthly[key].count;
+                // Add a new data point if one does not already exist
+                if (commits_monthly[i][key] === undefined) {
+                    commits_monthly[i][key] = {
+                        'count': 1,
+                        'date': firstDay
+                    };
+                }
+                // Increment existing data point
+                else {
+                    ++commits_monthly[i][key].count;
+                }
             }
         }
         // MetricGraphics.js requires a flat array of objects
-        var commits_monthly_flat = flatten_object(commits_monthly);
+        var acquia_commits = flatten_object(commits_monthly['acquia']);
+        var all_commits = flatten_object(commits_monthly['all']);
         // Mark the Drupal releases to get some context for spikes
         var markers = [
-            {
-                'date': new Date('2002-6-25'),
-                'label': 'Drupal 4 released'
-            },
             {
                 'date': new Date('2007-1-15'),
                 'label': 'Drupal 5 released'
@@ -43,9 +43,12 @@ $(function() {
         ];
         // Create the graph
         MG.data_graphic({
-            title: 'Acquia Contributions to Drupal Core',
-            data: commits_monthly_flat,
+            title: 'Drupal Core Contributions per Month',
+            data: [acquia_commits, all_commits],
+            legend: ['Employee Contributions', 'All Community Contributions'],
+            legend_target: '#legend',
             full_width: true,
+            right: 150,
             height: 600,
             target: '#chart',
             x_accessor: 'date',
@@ -60,43 +63,24 @@ $(function() {
             }
         });
 
-        // Create list of top contributors this last month (30 days)
-        var totals_month = {};
+        // Create list of employee contributors this last month (30 days)
+        var contributors = {};
         var last_month = (Date.now()/1000) - 2592000;
         var total = 0;
-        for (var i in data) {
-            if (last_month <= data[i].timestamp) {
-                for (var j in data[i].contributors) {
-                    var contributor = data[i].contributors[j];
-                    if (totals_month[contributor.name] === undefined) {
-                        totals_month[contributor.name] = 1;
-                        ++total;
-                    }
-                    else {
-                        ++totals_month[contributor.name];
-                        ++total;
+        var list = $('#top ol');
+        for (var i in data['acquia']) {
+            if (last_month <= data['acquia'][i].timestamp) {
+                for (var j in data['acquia'][i].contributors) {
+                    var contributor = data['acquia'][i].contributors[j];
+                    if (contributors[contributor.name] === undefined) {
+                        contributors[contributor.name] = true;
+                        list.append('<li>' + contributor.name + '</li>');
                     }
                 }
+                ++total;
             }
         }
-        // Sort totals
-        var totals_month_sorted = flatten_object(totals_month, true);
-        // Sort array
-        totals_month_sorted.sort(function(a, b) {
-            a = a[1];
-            b = b[1];
-
-            return a > b ? -1 : (a < b ? 1 : 0);
-        });
-        // Display in list
-        for (var i in totals_month_sorted) {
-            if (i >= 10) {
-                break;
-            }
-            var user = totals_month_sorted[i][0];
-            var count = totals_month_sorted[i][1];
-            $('#top ol').append('<li>' + user + ' (' + count + ')</li>');
-        }
+        list.append('<li>Total: ' + total + ' commits</li>');
     });
 });
 
