@@ -11,7 +11,7 @@ if (!$users = json_decode($json, TRUE)) {
 }
 
 // Clone the Drupal repository and assemble commit information
-//$output = shell_exec('rm -rf repos/drupal && git clone --branch 8.0.x http://git.drupal.org/project/drupal.git repos/drupal');
+$output = shell_exec('rm -rf repos/drupal && git clone --branch 8.0.x http://git.drupal.org/project/drupal.git repos/drupal');
 $log = shell_exec('git --git-dir repos/drupal/.git log --no-merges --since=2006-01-01 --format=\'"%h","%at","%an","%ae","%s"\'');
 $csv_rows = explode("\n", $log);
 

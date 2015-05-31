@@ -15,6 +15,10 @@ body {
     list-style: none;
 }
 
+#legend {
+    margin-top: 20px;
+}
+
 .mg-line1-color {
     stroke: #29AAE1;
 }
@@ -42,5 +46,9 @@ body {
 }
 
 .mg-active-datapoint {
-    fill: #29AAE1;
+    fill: white;
+}
+
+.mg-line1-legend-color {
+    color: #29AAE1;
 }

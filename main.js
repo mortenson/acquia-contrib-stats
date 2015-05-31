@@ -39,8 +39,17 @@ $(function() {
             {
                 'date': new Date('2011-1-5'),
                 'label': 'Drupal 7 released'
+            },
+            {
+                'date': new Date('2013-05-20'),
+                'label': 'Drupal 8 alpha released'
+            },
+            {
+                'date': new Date('2014-10-01'),
+                'label': 'Drupal 8 beta released'
             }
         ];
+
         // Create the graph
         MG.data_graphic({
             title: 'Drupal Core Contributions per Month',
