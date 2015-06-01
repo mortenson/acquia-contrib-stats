@@ -1,6 +1,11 @@
 $(function() {
     $.getJSON("commits.json", function(data) {
         var commits_monthly = {};
+        // Get the current month's key so we can exclude it later
+        var date = new Date();
+        var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        var this_month = firstDay.getFullYear() + '_' + firstDay.getMonth();
+
         // Count the number of commits per month
         for (var i in data) {
             commits_monthly[i] = {};
@@ -9,6 +14,11 @@ $(function() {
                 var date = new Date(data[i][j].timestamp * 1000);
                 var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
                 var key = firstDay.getFullYear() + '_' + firstDay.getMonth();
+
+                // Skip the current month
+                if (key == this_month) {
+                    continue;
+                }
 
                 // Add a new data point if one does not already exist
                 if (commits_monthly[i][key] === undefined) {
