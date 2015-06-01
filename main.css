@@ -52,3 +52,7 @@ body {
 .mg-line1-legend-color {
     color: #29AAE1;
 }
+
+.mg-x-rug {
+    stroke: #29AAE1;
+}

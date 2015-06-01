@@ -58,11 +58,13 @@ $(function() {
             legend_target: '#legend',
             full_width: true,
             right: 150,
+            x_rug: true,
             height: 600,
             target: '#chart',
             x_accessor: 'date',
             y_accessor: 'count',
             markers: markers,
+            animate_on_load: true,
             mouseover: function(d, i) {
                 var chart = d3.select('#chart svg .mg-active-datapoint');
                 var text = chart.text();
