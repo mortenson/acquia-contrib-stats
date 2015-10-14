@@ -57,6 +57,10 @@ $(function() {
             {
                 'date': new Date('2014-10-01'),
                 'label': 'Drupal 8 beta released'
+            },
+            {
+                'date': new Date('2015-10-07'),
+                'label': 'Drupal 8 rc1 released'
             }
         ];
 
